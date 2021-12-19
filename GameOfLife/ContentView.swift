@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-let defaultSizeX = 60
-let defaultSizeY = 40
+let defaultSizeX = 100
+let defaultSizeY = 70
 let boxSpacing: CGFloat = 20
 let testGrid = randomGrid(sizeX: 10, sizeY: 10)
 
@@ -19,33 +19,33 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-        Text("\(countGen)")
-            .font(.title)
-            .foregroundColor(.blue)
+            Text("Gen \(countGen)")
+                .font(.title)
+                .foregroundColor(.blue)
             ZStack {
-            GridView()
-            GameOfLifeView(grid: grid)
-                .onReceive(timer) { _ in
-                    let newgrid = evolve(grid)
-                    if (!newgrid.elementsEqual(grid)) {
-                        grid = newgrid
-                        countGen += 1
+                GridView()
+                GameOfLifeView(grid: grid)
+                    .onReceive(timer) { _ in
+                        let newgrid = evolve(grid)
+                        if (!newgrid.elementsEqual(grid)) {
+                            grid = newgrid
+                            countGen += 1
+                        }
                     }
-                }
+                    .onTapGesture {
+                        print("Tap")
+                    }
             }
-        
-    }
+        }
     }
 }
 
 struct GridView: View {
-    //var numberOfVerticalGridLines = 15
-    //var numberOfHorizontalGridLines = 10
-    
     var body: some View {
         GeometryReader { geometry in
-            let numberOfHorizontalGridLines = Int(geometry.size.height / boxSpacing) > defaultSizeY ? defaultSizeY : Int(geometry.size.height / boxSpacing)
-            let numberOfVerticalGridLines = Int(geometry.size.width / boxSpacing) > defaultSizeX ? defaultSizeX : Int(geometry.size.width / boxSpacing)
+            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(defaultSizeY), geometry.size.width / CGFloat(defaultSizeX))
+            let numberOfHorizontalGridLines = defaultSizeY
+            let numberOfVerticalGridLines = defaultSizeX
             let height = CGFloat(numberOfHorizontalGridLines) * boxSpacing
             let width = CGFloat(numberOfVerticalGridLines) * boxSpacing
             Path { path in
@@ -62,8 +62,15 @@ struct GridView: View {
                 }
             }
             .stroke(Color.black)
-            .frame(width: width, height: height, alignment: .center)
+            //.background(Color.blue)
+            /*
+             .onAppear()
+             {
+             print("geo height: \(geometry.size.height) geo width: \(geometry.size.width) boxSpacing: \(boxSpacing) #H lines: \(numberOfHorizontalGridLines) #V lines: \(numberOfVerticalGridLines) height: \(height) width: \(width)")
+             }
+             */
         }
+        
     }
 }
 
@@ -73,11 +80,10 @@ struct GameOfLifeView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let sizeY = grid.count
-            let sizeX = grid[0].count
+            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(defaultSizeY), geometry.size.width / CGFloat(defaultSizeX))
             Path { path in
-                for y in (0...sizeY-1) {
-                    for x in (0...sizeX-1) {
+                for y in (0...defaultSizeY-1) {
+                    for x in (0...defaultSizeX-1) {
                         if (grid[y][x] == 1) {
                             let hOffset: CGFloat = CGFloat(x) * boxSpacing
                             let vOffset: CGFloat = CGFloat(y) * boxSpacing
@@ -90,7 +96,6 @@ struct GameOfLifeView: View {
                 }
             }
             .fill(Color.black)
-            .frame(width: CGFloat(sizeX) * boxSpacing, height: CGFloat(sizeY) * boxSpacing, alignment: .center)
             //.background(.red)
         }
     }
