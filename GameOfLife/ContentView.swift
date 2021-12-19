@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 let defaultSizeX = 100
 let defaultSizeY = 70
@@ -19,12 +20,41 @@ struct ContentView: View {
                            .green, .blue, .purple, .pink]
     @State private var fgColor: Color = .black
     @State var countGen = 0
+    @State var play: Bool = true
     
     var body: some View {
         VStack {
+            HStack {
+                HStack {
+                    Button( action: { play = !play }) {
+                        Label("Play/Pause", systemImage: "playpause.fill")
+                    }
+                    Button(action: {
+                        grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
+                        countGen = 0
+                    }) {
+                        Label("Reset", systemImage: "restart")
+                    }
+                }
+                .padding()
+                Spacer()
             Text("Gen \(countGen)")
                 .font(.title)
                 .foregroundColor(fgColor)
+                .onTapGesture {
+                    fgColor = colors.randomElement()!
+                }
+                Spacer()
+                HStack {
+                    Button(action: save2CSV) {
+                        Label("Save", systemImage: "square.and.arrow.down")
+                    }
+                    Button(action: {}) {
+                        Label("Load", systemImage: "square.and.arrow.up")
+                    }
+                }
+                .padding()
+            }
             ZStack {
                 GridView()
                 GameOfLifeView(grid: $grid, color: fgColor)
@@ -32,14 +62,55 @@ struct ContentView: View {
                         fgColor = colors.randomElement()!
                     }
                     .onReceive(timer) { _ in
+                        if (play) {
                         let newgrid = evolve(grid)
                         if (!newgrid.elementsEqual(grid)) {
                             grid = newgrid
                             countGen += 1
                         }
-                    }
+                        }
+                            else {
+                                play = false
+                            }
+                        }
             }
         }
+    }
+    
+    func save2CSV() {
+        let panel = NSSavePanel()
+        //let panel = NSOpenPanel()
+        /*
+        panel.allowedContentTypes = { [UTType.commaSeparatedText] }()
+        panel.begin(completionHandler: { (result) in
+            if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                var fileMgt: FileManager
+                if #available(OSX 10.14, *) {
+                    fileMgt = FileManager(authorization: NSWorkspace.Authorization())
+                } else {
+                    // Fallback on earlier versions
+                    fileMgt = FileManager.default
+                }
+                fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
+                var cvsData = Data(capacity: 200000000)
+                let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
+                if (cvsFile != nil) {
+                    var cvsStr = "tutu,tata\n"
+                        cvsStr.append("toto,titi\n")
+                    cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
+                    cvsFile!.write(cvsData)
+                    cvsFile!.synchronizeFile()
+                    cvsFile!.closeFile()
+                }
+            }
+        }
+        )
+         */
+    }
+    
+    func loadCSV() {
+        
     }
 }
 
