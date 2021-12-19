@@ -7,17 +7,15 @@
 
 import Foundation
 
-func randomizeGrid(_ grid: [[Int]]) -> [[Int]] {
-    var newGrid = grid
-    let sizeY = grid.count
-    let sizeX = grid[0].count
+func randomGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
+    var grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
     
     for y in (0...sizeY-1) {
         for x in (0...sizeX-1) {
-            newGrid[y][x] = Int.random(in: 0...1)
+            grid[y][x] = Int.random(in: 0...1)
         }
     }
-    return newGrid
+    return grid
 }
 
 func evolve(_ grid: [[Int]]) -> [[Int]] {

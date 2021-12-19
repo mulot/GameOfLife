@@ -7,21 +7,22 @@
 
 import SwiftUI
 
-let sizeX = 60
-let sizeY = 40
-let initGrid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
-let testGrid = randomizeGrid(initGrid)
+let defaultSizeX = 60
+let defaultSizeY = 40
+let boxSpacing: CGFloat = 20
+let testGrid = randomGrid(sizeX: 10, sizeY: 10)
 
 struct ContentView: View {
-    @State var grid = randomizeGrid(initGrid)
+    @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State var countGen = 0
     
     var body: some View {
+        VStack {
         Text("\(countGen)")
             .font(.title)
             .foregroundColor(.blue)
-        ZStack {
+            ZStack {
             GridView()
             GameOfLifeView(grid: grid)
                 .onReceive(timer) { _ in
@@ -31,33 +32,37 @@ struct ContentView: View {
                         countGen += 1
                     }
                 }
-        }
+            }
+        
+    }
     }
 }
 
 struct GridView: View {
-    var horizontalSpacing: CGFloat = 20
-    var verticalSpacing: CGFloat = 20
     //var numberOfVerticalGridLines = 15
     //var numberOfHorizontalGridLines = 10
     
     var body: some View {
         GeometryReader { geometry in
+            let numberOfHorizontalGridLines = Int(geometry.size.height / boxSpacing) > defaultSizeY ? defaultSizeY : Int(geometry.size.height / boxSpacing)
+            let numberOfVerticalGridLines = Int(geometry.size.width / boxSpacing) > defaultSizeX ? defaultSizeX : Int(geometry.size.width / boxSpacing)
+            let height = CGFloat(numberOfHorizontalGridLines) * boxSpacing
+            let width = CGFloat(numberOfVerticalGridLines) * boxSpacing
             Path { path in
-                let numberOfHorizontalGridLines = Int(geometry.size.height / self.verticalSpacing)
-                 let numberOfVerticalGridLines = Int(geometry.size.width / self.horizontalSpacing)
+                
                 for index in 0...numberOfVerticalGridLines {
-                    let vOffset: CGFloat = CGFloat(index) * self.horizontalSpacing
+                    let vOffset: CGFloat = CGFloat(index) * boxSpacing
                     path.move(to: CGPoint(x: vOffset, y: 0))
-                    path.addLine(to: CGPoint(x: vOffset, y: geometry.size.height))
+                    path.addLine(to: CGPoint(x: vOffset, y: height))
                 }
                 for index in 0...numberOfHorizontalGridLines {
-                    let hOffset: CGFloat = CGFloat(index) * self.verticalSpacing
+                    let hOffset: CGFloat = CGFloat(index) * boxSpacing
                     path.move(to: CGPoint(x: 0, y: hOffset))
-                    path.addLine(to: CGPoint(x: geometry.size.width, y: hOffset))
+                    path.addLine(to: CGPoint(x: width, y: hOffset))
                 }
             }
             .stroke(Color.black)
+            .frame(width: width, height: height, alignment: .center)
         }
     }
 }
@@ -65,28 +70,28 @@ struct GridView: View {
 
 struct GameOfLifeView: View {
     var grid: [[Int]]
-    var horizontalSpacing: CGFloat = 20
-    var verticalSpacing: CGFloat = 20
     
     var body: some View {
         GeometryReader { geometry in
+            let sizeY = grid.count
+            let sizeX = grid[0].count
             Path { path in
-                let sizeY = grid.count
-                let sizeX = grid[0].count
                 for y in (0...sizeY-1) {
                     for x in (0...sizeX-1) {
                         if (grid[y][x] == 1) {
-                            let hOffset: CGFloat = CGFloat(x) * horizontalSpacing
-                            let vOffset: CGFloat = CGFloat(y) * verticalSpacing
+                            let hOffset: CGFloat = CGFloat(x) * boxSpacing
+                            let vOffset: CGFloat = CGFloat(y) * boxSpacing
                             path.move(to: CGPoint(x: 0 + hOffset, y: 0 + vOffset))
-                            path.addLine(to: CGPoint(x: horizontalSpacing + hOffset, y: 0 + vOffset))
-                            path.addLine(to: CGPoint(x: horizontalSpacing + hOffset, y: verticalSpacing + vOffset))
-                            path.addLine(to: CGPoint(x: 0 + hOffset, y: verticalSpacing + vOffset))
+                            path.addLine(to: CGPoint(x: boxSpacing + hOffset, y: 0 + vOffset))
+                            path.addLine(to: CGPoint(x: boxSpacing + hOffset, y: boxSpacing + vOffset))
+                            path.addLine(to: CGPoint(x: 0 + hOffset, y: boxSpacing + vOffset))
                         }
                     }
                 }
             }
             .fill(Color.black)
+            .frame(width: CGFloat(sizeX) * boxSpacing, height: CGFloat(sizeY) * boxSpacing, alignment: .center)
+            //.background(.red)
         }
     }
 }
