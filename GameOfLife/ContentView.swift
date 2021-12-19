@@ -24,12 +24,12 @@ struct ContentView: View {
         VStack {
             Text("Gen \(countGen)")
                 .font(.title)
-                .foregroundColor(.blue)
+                .foregroundColor(fgColor)
             ZStack {
                 GridView()
-                GameOfLifeView(grid: grid, color: fgColor)
+                GameOfLifeView(grid: $grid, color: fgColor)
                     .onAppear {
-                        //fgColor = colors.randomElement()!
+                        fgColor = colors.randomElement()!
                     }
                     .onReceive(timer) { _ in
                         let newgrid = evolve(grid)
@@ -38,11 +38,6 @@ struct ContentView: View {
                             countGen += 1
                         }
                     }
-                /*
-                    .onTapGesture {
-                        print("Tap")
-                    }
-                 */
             }
         }
     }
@@ -84,7 +79,7 @@ struct GridView: View {
 
 
 struct GameOfLifeView: View {
-    var grid: [[Int]]
+    @Binding var grid: [[Int]]
     var color: Color
     @State private var pt: CGPoint = .zero
     
@@ -94,7 +89,14 @@ struct GameOfLifeView: View {
             let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(defaultSizeY), geometry.size.width / CGFloat(defaultSizeX))
             let myGesture = DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded({
                 self.pt = $0.startLocation
-                print("Tapped at: \(pt.x), \(pt.y) Box X: \(Int(pt.x/boxSpacing)) Box Y: \(Int(pt.y/boxSpacing))")
+                //print("Tapped at: \(pt.x), \(pt.y) Box X: \(Int(pt.x/boxSpacing)) Box Y: \(Int(pt.y/boxSpacing)) Box val: \(grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)])")
+                if (grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)] == 0) {
+                    grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)] = 1
+                }
+                else {
+                    grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)] = 0
+                }
+                //print("new box val: \(grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)])")
             })
             Path { path in
                 for y in (0...defaultSizeY-1) {
@@ -129,7 +131,7 @@ struct GameOfLife_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             GridView()
-            GameOfLifeView(grid: testGrid, color: .black)
+            //GameOfLifeView(grid: $testGrid, color: .black)
         }
     }
 }
