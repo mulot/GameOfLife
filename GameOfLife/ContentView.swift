@@ -10,8 +10,7 @@ import UniformTypeIdentifiers
 
 let defaultSizeX = 100
 let defaultSizeY = 70
-let boxSpacing: CGFloat = 20
-let testGrid = randomGrid(sizeX: 10, sizeY: 10)
+//let testGrid = randomGrid(sizeX: 10, sizeY: 10)
 
 struct ContentView: View {
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
@@ -112,7 +111,31 @@ struct ContentView: View {
     }
     
     func loadCSV() {
-        
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = { [UTType.commaSeparatedText] }()
+        panel.begin(completionHandler: { (result) in
+            if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                //print("open \(String(describing: panel.url))")
+                do {
+                    let savedData = try Data(contentsOf: panel.url!)
+                    if let savedString = String(data: savedData, encoding: .ascii) {
+                        //print(savedString)
+                        var y = 0
+                        for line in savedString.split(separator: "\n") {
+                            //print("\(y)#: \(line)")
+                            var x = 0
+                            for cell in line.split(separator: ";") {
+                                //print("Y:\(y) X:\(x)#: \(cell)")
+                                grid[y][x] = Int(cell) ?? 0
+                                x += 1
+                            }
+                            y += 1
+                        }
+                    }
+                }
+                catch { print(error) }
+            }
+        })
     }
 }
 
@@ -204,7 +227,7 @@ struct GameOfLife_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             GridView()
-            //GameOfLifeView(grid: $testGrid, color: .black)
+            //GameOfLifeView(grid: testGrid, color: .black)
         }
     }
 }
