@@ -49,7 +49,7 @@ struct ContentView: View {
                     Button(action: save2CSV) {
                         Label("Save", systemImage: "square.and.arrow.down")
                     }
-                    Button(action: {}) {
+                    Button(action: loadCSV) {
                         Label("Load", systemImage: "square.and.arrow.up")
                     }
                 }
@@ -78,9 +78,7 @@ struct ContentView: View {
     }
     
     func save2CSV() {
-        let panel = NSSavePanel()
-        //let panel = NSOpenPanel()
-        /*
+       let panel = NSSavePanel()
         panel.allowedContentTypes = { [UTType.commaSeparatedText] }()
         panel.begin(completionHandler: { (result) in
             if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
@@ -96,8 +94,13 @@ struct ContentView: View {
                 var cvsData = Data(capacity: 200000000)
                 let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                 if (cvsFile != nil) {
-                    var cvsStr = "tutu,tata\n"
-                        cvsStr.append("toto,titi\n")
+                    var cvsStr = String()
+                    for y in (0...defaultSizeY-1) {
+                        for x in (0...defaultSizeX-1) {
+                            cvsStr.append("\(grid[y][x]);")
+                        }
+                        cvsStr.append("\n")
+                    }
                     cvsData.append(cvsStr.data(using: String.Encoding.ascii)!)
                     cvsFile!.write(cvsData)
                     cvsFile!.synchronizeFile()
@@ -106,7 +109,6 @@ struct ContentView: View {
             }
         }
         )
-         */
     }
     
     func loadCSV() {
