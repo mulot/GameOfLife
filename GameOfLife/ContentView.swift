@@ -14,12 +14,12 @@ let defaultSizeY = 70
 
 struct ContentView: View {
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let colors: [Color] = [.gray, .red, .orange, .yellow,
                            .green, .blue, .purple, .pink]
-    @State private var fgColor: Color = .black
-    @State var countGen = 0
-    @State var play: Bool = true
+    @State var fgColor: Color = .black
+    @State private var countGen = 0
+    @State private var play: Bool = true
     
     var body: some View {
         VStack {
@@ -119,6 +119,7 @@ struct ContentView: View {
                 do {
                     let savedData = try Data(contentsOf: panel.url!)
                     if let savedString = String(data: savedData, encoding: .ascii) {
+                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: defaultSizeX), count: defaultSizeY)
                         //print(savedString)
                         var y = 0
                         for line in savedString.split(separator: "\n") {
@@ -140,11 +141,14 @@ struct ContentView: View {
 }
 
 struct GridView: View {
+    var sizeX = defaultSizeX
+    var sizeY = defaultSizeY
+    
     var body: some View {
         GeometryReader { geometry in
-            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(defaultSizeY), geometry.size.width / CGFloat(defaultSizeX))
-            let numberOfHorizontalGridLines = defaultSizeY
-            let numberOfVerticalGridLines = defaultSizeX
+            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(sizeY), geometry.size.width / CGFloat(sizeX))
+            let numberOfHorizontalGridLines = sizeY
+            let numberOfVerticalGridLines = sizeX
             let height = CGFloat(numberOfHorizontalGridLines) * boxSpacing
             let width = CGFloat(numberOfVerticalGridLines) * boxSpacing
             Path { path in
@@ -178,11 +182,13 @@ struct GameOfLifeView: View {
     @Binding var grid: [[Int]]
     var color: Color
     @State private var pt: CGPoint = .zero
+    var sizeX = defaultSizeX
+    var sizeY = defaultSizeY
     
     var body: some View {
         
         GeometryReader { geometry in
-            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(defaultSizeY), geometry.size.width / CGFloat(defaultSizeX))
+            let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(sizeY), geometry.size.width / CGFloat(sizeX))
             let myGesture = DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded({
                 self.pt = $0.startLocation
                 //print("Tapped at: \(pt.x), \(pt.y) Box X: \(Int(pt.x/boxSpacing)) Box Y: \(Int(pt.y/boxSpacing)) Box val: \(grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)])")
@@ -195,8 +201,8 @@ struct GameOfLifeView: View {
                 //print("new box val: \(grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)])")
             })
             Path { path in
-                for y in (0...defaultSizeY-1) {
-                    for x in (0...defaultSizeX-1) {
+                for y in (0...sizeY-1) {
+                    for x in (0...sizeX-1) {
                         if (grid[y][x] == 1) {
                             let hOffset: CGFloat = CGFloat(x) * boxSpacing
                             let vOffset: CGFloat = CGFloat(y) * boxSpacing
