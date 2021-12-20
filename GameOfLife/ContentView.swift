@@ -13,6 +13,8 @@ let defaultSizeY = 70
 //let testGrid = randomGrid(sizeX: 10, sizeY: 10)
 
 struct ContentView: View {
+    @State var sizeX = defaultSizeX
+    @State var sizeY = defaultSizeY
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let colors: [Color] = [.black, .gray, .red, .orange, .yellow,
@@ -29,7 +31,7 @@ struct ContentView: View {
                         Label("Play/Pause", systemImage: "playpause.fill")
                     }
                     Button(action: {
-                        grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
+                        grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
                         countGen = 0
                     }) {
                         Label("Reset", systemImage: "restart")
@@ -37,12 +39,12 @@ struct ContentView: View {
                 }
                 .padding()
                 Spacer()
-            Text("Gen \(countGen)")
-                .font(.title)
-                .foregroundColor(fgColor)
-                .onTapGesture {
-                    fgColor = colors.randomElement()!
-                }
+                Text("Gen \(countGen)")
+                    .font(.title)
+                    .foregroundColor(fgColor)
+                    .onTapGesture {
+                        fgColor = colors.randomElement()!
+                    }
                 Spacer()
                 HStack {
                     Button(action: save2CSV) {
@@ -55,29 +57,29 @@ struct ContentView: View {
                 .padding()
             }
             ZStack {
-                GridView()
-                GameOfLifeView(grid: $grid, color: fgColor)
+                GridView(sizeX: sizeX, sizeY: sizeY)
+                GameOfLifeView(grid: $grid, sizeX: sizeX, sizeY: sizeY, color: fgColor)
                     .onAppear {
                         fgColor = colors.randomElement()!
                     }
                     .onReceive(timer) { _ in
                         if (play) {
-                        let newgrid = evolve(grid)
-                        if (!newgrid.elementsEqual(grid)) {
-                            grid = newgrid
-                            countGen += 1
-                        }
-                        }
-                            else {
-                                play = false
+                            let newgrid = evolve(grid)
+                            if (!newgrid.elementsEqual(grid)) {
+                                grid = newgrid
+                                countGen += 1
                             }
                         }
+                        else {
+                            play = false
+                        }
+                    }
             }
         }
     }
     
     func save2CSV() {
-       let panel = NSSavePanel()
+        let panel = NSSavePanel()
         panel.allowedContentTypes = { [UTType.commaSeparatedText] }()
         panel.begin(completionHandler: { (result) in
             if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
@@ -94,8 +96,8 @@ struct ContentView: View {
                 let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                 if (cvsFile != nil) {
                     var cvsStr = String()
-                    for y in (0...defaultSizeY-1) {
-                        for x in (0...defaultSizeX-1) {
+                    for y in (0...sizeY-1) {
+                        for x in (0...sizeX-1) {
                             cvsStr.append("\(grid[y][x]);")
                         }
                         cvsStr.append("\n")
@@ -119,20 +121,20 @@ struct ContentView: View {
                 do {
                     let savedData = try Data(contentsOf: panel.url!)
                     if let savedString = String(data: savedData, encoding: .ascii) {
-                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: defaultSizeX), count: defaultSizeY)
+                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
                         countGen = 0
                         //print(savedString)
                         var y = 0
                         for line in savedString.split(separator: "\n") {
                             //print("\(y)#: \(line)")
-                            if (y > defaultSizeY-1) {
+                            if (y > sizeY-1) {
                                 print("Y:\(y) y overflows")
                                 break
                             }
                             var x = 0
                             for cell in line.split(separator: ";") {
                                 //print("Y:\(y) X:\(x)#: \(cell)")
-                                if (x > defaultSizeX-1) {
+                                if (x > sizeX-1) {
                                     print("X:\(x) Y:\(y) x overflows")
                                     break
                                 }
@@ -190,13 +192,12 @@ struct GridView: View {
 
 struct GameOfLifeView: View {
     @Binding var grid: [[Int]]
-    var color: Color
     @State private var pt: CGPoint = .zero
     var sizeX = defaultSizeX
     var sizeY = defaultSizeY
+    var color: Color
     
     var body: some View {
-        
         GeometryReader { geometry in
             let boxSpacing:CGFloat = min(geometry.size.height / CGFloat(sizeY), geometry.size.width / CGFloat(sizeX))
             let myGesture = DragGesture(minimumDistance: 0, coordinateSpace: .local).onEnded({
@@ -210,6 +211,7 @@ struct GameOfLifeView: View {
                 }
                 //print("new box val: \(grid[Int(pt.y/boxSpacing)][Int(pt.x/boxSpacing)])")
             })
+            
             Path { path in
                 for y in (0...sizeY-1) {
                     for x in (0...sizeX-1) {
@@ -228,13 +230,12 @@ struct GameOfLifeView: View {
             .gesture(myGesture)
             //.background(.red)
         }
-        
     }
 }
 
 struct GridView_Previews: PreviewProvider {
     static var previews: some View {
-        GridView()
+        GridView(sizeX: 20, sizeY: 10)
     }
 }
 
@@ -242,7 +243,7 @@ struct GridView_Previews: PreviewProvider {
 struct GameOfLife_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            GridView()
+            GridView(sizeX: 20, sizeY: 10)
             //GameOfLifeView(grid: testGrid, color: .black)
         }
     }
