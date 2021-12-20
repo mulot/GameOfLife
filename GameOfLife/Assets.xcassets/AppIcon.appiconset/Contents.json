@@ -21,31 +21,37 @@
       "size" : "32x32"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-128.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-257.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-256.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-512.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-513.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
+      "filename" : "GameOfLife App Icon-v1-1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"

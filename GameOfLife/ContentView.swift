@@ -120,15 +120,25 @@ struct ContentView: View {
                     let savedData = try Data(contentsOf: panel.url!)
                     if let savedString = String(data: savedData, encoding: .ascii) {
                         grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: defaultSizeX), count: defaultSizeY)
+                        countGen = 0
                         //print(savedString)
                         var y = 0
                         for line in savedString.split(separator: "\n") {
                             //print("\(y)#: \(line)")
+                            if (y > defaultSizeY-1) {
+                                print("Y:\(y) y overflows")
+                                break
+                            }
                             var x = 0
                             for cell in line.split(separator: ";") {
                                 //print("Y:\(y) X:\(x)#: \(cell)")
+                                if (x > defaultSizeX-1) {
+                                    print("X:\(x) Y:\(y) x overflows")
+                                    break
+                                }
                                 grid[y][x] = Int(cell) ?? 0
                                 x += 1
+                                
                             }
                             y += 1
                         }
