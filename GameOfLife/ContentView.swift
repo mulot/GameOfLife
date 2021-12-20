@@ -15,6 +15,8 @@ let defaultSizeY = 70
 struct ContentView: View {
     @State var sizeX = defaultSizeX
     @State var sizeY = defaultSizeY
+    @State private var strX: String = String(defaultSizeX)
+    @State private var strY: String = String(defaultSizeY)
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let colors: [Color] = [.black, .gray, .red, .orange, .yellow,
@@ -36,6 +38,21 @@ struct ContentView: View {
                     }) {
                         Label("Reset", systemImage: "restart")
                     }
+                    TextField("Size X", text: $strX)
+                        .fixedSize()
+                        .onSubmit {
+                            sizeX = Int(strX) ?? defaultSizeX
+                            grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
+                            countGen = 0
+                        }
+                    Text("x")
+                    TextField("Size Y", text: $strY)
+                        .fixedSize()
+                        .onSubmit {
+                            sizeY = Int(strY) ?? defaultSizeY
+                            grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
+                            countGen = 0
+                        }
                 }
                 .padding()
                 Spacer()
@@ -59,9 +76,6 @@ struct ContentView: View {
             ZStack {
                 GridView(sizeX: sizeX, sizeY: sizeY)
                 GameOfLifeView(grid: $grid, sizeX: sizeX, sizeY: sizeY, color: fgColor)
-                    .onAppear {
-                        fgColor = colors.randomElement()!
-                    }
                     .onReceive(timer) { _ in
                         if (play) {
                             let newgrid = evolve(grid)
@@ -121,18 +135,25 @@ struct ContentView: View {
                 do {
                     let savedData = try Data(contentsOf: panel.url!)
                     if let savedString = String(data: savedData, encoding: .ascii) {
+                        let yTabs = savedString.split(separator: "\n")
+                        sizeY = yTabs.count
+                        if (sizeY > 0) {
+                            sizeX = yTabs[0].split(separator: ";").count
+                        }
                         grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
                         countGen = 0
+                        print("Tab by \(sizeX)x\(sizeY) loaded")
                         //print(savedString)
                         var y = 0
-                        for line in savedString.split(separator: "\n") {
+                        for line in yTabs {
                             //print("\(y)#: \(line)")
                             if (y > sizeY-1) {
                                 print("Y:\(y) y overflows")
                                 break
                             }
                             var x = 0
-                            for cell in line.split(separator: ";") {
+                            let xTabs = line.split(separator: ";")
+                            for cell in xTabs {
                                 //print("Y:\(y) X:\(x)#: \(cell)")
                                 if (x > sizeX-1) {
                                     print("X:\(x) Y:\(y) x overflows")
@@ -140,7 +161,6 @@ struct ContentView: View {
                                 }
                                 grid[y][x] = Int(cell) ?? 0
                                 x += 1
-                                
                             }
                             y += 1
                         }
