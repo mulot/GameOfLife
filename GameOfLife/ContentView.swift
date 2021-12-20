@@ -15,7 +15,7 @@ let defaultSizeY = 70
 struct ContentView: View {
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let colors: [Color] = [.gray, .red, .orange, .yellow,
+    let colors: [Color] = [.black, .gray, .red, .orange, .yellow,
                            .green, .blue, .purple, .pink]
     @State var fgColor: Color = .black
     @State private var countGen = 0
