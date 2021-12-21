@@ -84,9 +84,6 @@ struct ContentView: View {
                                 countGen += 1
                             }
                         }
-                        else {
-                            play = false
-                        }
                     }
             }
         }
