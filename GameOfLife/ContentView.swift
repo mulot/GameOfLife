@@ -10,7 +10,43 @@ import UniformTypeIdentifiers
 
 let defaultSizeX = 100
 let defaultSizeY = 70
+let defaultBoxSpacing: CGFloat = 10
 //let testGrid = randomGrid(sizeX: 10, sizeY: 10)
+
+extension View {
+    func size(size: Binding<CGSize>) -> some View {
+        ChildSizeReader(size: size) {
+            self
+        }
+    }
+}
+
+struct ChildSizeReader<Content: View>: View {
+    @Binding var size: CGSize
+    
+    let content: () -> Content
+    var body: some View {
+        content().background(
+            GeometryReader { proxy in
+                Color.clear.preference(
+                    key: SizePreferenceKey.self,
+                    value: proxy.size
+                )
+            })
+            .onPreferenceChange(SizePreferenceKey.self) { preferences in
+                self.size = preferences
+            }
+    }
+}
+
+struct SizePreferenceKey: PreferenceKey {
+    typealias Value = CGSize
+    static var defaultValue: Value = .zero
+    
+    static func reduce(value _: inout Value, nextValue: () -> Value) {
+        _ = nextValue()
+    }
+}
 
 struct ContentView: View {
     @State var sizeX = defaultSizeX
@@ -24,6 +60,7 @@ struct ContentView: View {
     @State var fgColor: Color = .black
     @State private var countGen = 0
     @State private var play: Bool = true
+    @State var gridSize: CGSize = .zero
     
     var body: some View {
         VStack {
@@ -53,6 +90,19 @@ struct ContentView: View {
                             grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
                             countGen = 0
                         }
+                    Button( action: {
+                        if (gridSize != .zero) {
+                            //print("Size is \(gridSize.width) x \(gridSize.height)")
+                            sizeX = Int(gridSize.width / defaultBoxSpacing)
+                            sizeY = Int(gridSize.height / defaultBoxSpacing)
+                            strX = String(sizeX)
+                            strY = String(sizeY)
+                            grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
+                            countGen = 0
+                        }
+                    }) {
+                        Label("Adapt", systemImage: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
+                    }
                 }
                 .padding()
                 Spacer()
@@ -76,6 +126,7 @@ struct ContentView: View {
             ZStack {
                 GridView(sizeX: sizeX, sizeY: sizeY)
                 GameOfLifeView(grid: $grid, sizeX: sizeX, sizeY: sizeY, color: fgColor)
+                    .size(size: $gridSize)
                     .onReceive(timer) { _ in
                         if (play) {
                             let newgrid = evolve(grid)
