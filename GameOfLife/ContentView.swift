@@ -153,7 +153,6 @@ struct ContentView: View {
                     fileMgt = FileManager.default
                 }
                 fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
-                //var cvsData = NSMutableData.init(capacity: Constants.BUFFER_LINES)
                 var cvsData = Data(capacity: 200000000)
                 let cvsFile = FileHandle(forWritingAtPath: panel.url!.path)
                 if (cvsFile != nil) {
