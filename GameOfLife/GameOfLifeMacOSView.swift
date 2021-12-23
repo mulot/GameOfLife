@@ -145,7 +145,10 @@ struct macOSView: View {
     func export2RLE() {
         play = false
         let panel = NSSavePanel()
-        panel.allowedContentTypes = { [UTType.text] }()
+        let rleType = UTType(filenameExtension: "rle", conformingTo: .plainText)
+        if (rleType != nil) {
+            panel.allowedContentTypes = { [rleType!] }()
+        }
         panel.begin(completionHandler: { (result) in
             if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
                 var fileMgt: FileManager
@@ -271,20 +274,21 @@ struct macOSView: View {
     
     func importRLE() {
         let panel = NSOpenPanel()
-        //panel.allowedContentTypes = { [UTType.text] }()
+        panel.allowedContentTypes = { [UTType.plainText] }()
         panel.begin(completionHandler: { (result) in
             if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
                 //print("open \(String(describing: panel.url))")
                 do {
                     let savedData = try Data(contentsOf: panel.url!)
                     if let savedString = String(data: savedData, encoding: .ascii) {
+                        //print("saved: \(savedString)")
                         var rleStr = String()
                         var endRLE = false
                         let lines = savedString.split(separator: "\n")
                         for str in lines {
+                            //print("line: \(str)")
                             let line = str.replacingOccurrences(of: " ", with: "")
                             if (!line.hasPrefix("#")) {
-                                //print("line: \(line)")
                                 if (line.contains(",")) {
                                     let infos = line.split(separator: ",")
                                     for info in infos {
@@ -292,14 +296,14 @@ struct macOSView: View {
                                             let keyVal = info.split(separator: "=")
                                             if (keyVal.count == 2) {
                                                 sizeX = Int(keyVal[1]) ?? 0
-                                                //print("X : \(sizeX)")
+                                                print("X : \(sizeX)")
                                             }
                                         }
                                         else if (info.lowercased().contains("y")) {
                                             let keyVal = info.split(separator: "=")
                                             if (keyVal.count == 2) {
                                                 sizeY = Int(keyVal[1]) ?? 0
-                                                //print("Y : \(sizeY)")
+                                                print("Y : \(sizeY)")
                                             }
                                         }
                                     }
@@ -323,6 +327,7 @@ struct macOSView: View {
                             let xLines = RLEEnd[0].split(separator: "$")
                             var y = 0
                             for xLine in xLines {
+                                print("X line: \(xLine)")
                                 var x = 0
                                 let scanner = Scanner(string: String(xLine))
                                 while !scanner.isAtEnd {
