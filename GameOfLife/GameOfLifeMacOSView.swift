@@ -25,7 +25,7 @@ struct macOSView: View {
     @State private var gridSize: CGSize = .zero
     
     var body: some View {
-      let timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
+        let timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
         VStack {
             HStack {
                 HStack {
@@ -69,7 +69,7 @@ struct macOSView: View {
                     Button(action: export2RLE) {
                         Label("Save", systemImage: "square.and.arrow.down")
                     }
-                    Button(action: loadCSV) {
+                    Button(action: importRLE) {
                         Label("Load", systemImage: "square.and.arrow.up")
                     }
                     Slider(value: $delay, in: 0.01...2) {
@@ -261,6 +261,87 @@ struct macOSView: View {
                                 x += 1
                             }
                             y += 1
+                        }
+                    }
+                }
+                catch { print(error) }
+            }
+        })
+    }
+    
+    func importRLE() {
+        let panel = NSOpenPanel()
+        //panel.allowedContentTypes = { [UTType.text] }()
+        panel.begin(completionHandler: { (result) in
+            if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                //print("open \(String(describing: panel.url))")
+                do {
+                    let savedData = try Data(contentsOf: panel.url!)
+                    if let savedString = String(data: savedData, encoding: .ascii) {
+                        var rleStr = String()
+                        var endRLE = false
+                        let lines = savedString.split(separator: "\n")
+                        for str in lines {
+                            let line = str.replacingOccurrences(of: " ", with: "")
+                            if (!line.hasPrefix("#")) {
+                                //print("line: \(line)")
+                                if (line.contains(",")) {
+                                    let infos = line.split(separator: ",")
+                                    for info in infos {
+                                        if (info.lowercased().contains("x")) {
+                                            let keyVal = info.split(separator: "=")
+                                            if (keyVal.count == 2) {
+                                                sizeX = Int(keyVal[1]) ?? 0
+                                                //print("X : \(sizeX)")
+                                            }
+                                        }
+                                        else if (info.lowercased().contains("y")) {
+                                            let keyVal = info.split(separator: "=")
+                                            if (keyVal.count == 2) {
+                                                sizeY = Int(keyVal[1]) ?? 0
+                                                //print("Y : \(sizeY)")
+                                            }
+                                        }
+                                    }
+                                    if (sizeX > 0 && sizeY > 0) {
+                                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
+                                        countGen = 0
+                                    }
+                                }
+                                else if ((line.contains("b") || line.contains("b")) && !endRLE) {
+                                    if (line.contains("!")) {
+                                        endRLE = true
+                                    }
+                                    rleStr.append(contentsOf: line)
+                                }
+                            }
+                            
+                        }
+                        let RLEEnd = rleStr.split(separator: "!")
+                        if (RLEEnd.count > 0)
+                        {
+                            let xLines = RLEEnd[0].split(separator: "$")
+                            var y = 0
+                            for xLine in xLines {
+                                var x = 0
+                                let scanner = Scanner(string: String(xLine))
+                                while !scanner.isAtEnd {
+                                    let nbCell = scanner.scanInt()
+                                    let c = scanner.scanCharacter()
+                                    if (nbCell != nil) {
+                                        for _ in 1...nbCell! {
+                                            grid[y][x] = c == "o" ? 1 : 0
+                                            x += 1
+                                        }
+                                    }
+                                    else {
+                                        grid[y][x] = c == "o" ? 1 : 0
+                                        x += 1
+                                    }
+                                    //print("X line: \(xLine) Nb: \(nbCell) c:\(c)")
+                                }
+                                y += 1
+                            }
                         }
                     }
                 }

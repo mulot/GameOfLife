@@ -71,7 +71,7 @@ struct GameOfLifeView: View {
             })
 #elseif os(tvOS)
 #endif
-            
+            if (sizeX > 0 && sizeY > 0) {
             Path { path in
                 for y in (0...sizeY-1) {
                     for x in (0...sizeX-1) {
@@ -91,6 +91,7 @@ struct GameOfLifeView: View {
             .gesture(myGesture)
 #elseif os(tvOS)
 #endif
+            }
             //.background(.red)
         }
     }
