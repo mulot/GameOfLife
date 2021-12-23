@@ -66,7 +66,7 @@ struct macOSView: View {
                     }) {
                         Label("Adapt", systemImage: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
                     }
-                    Button(action: save2CSV) {
+                    Button(action: export2RLE) {
                         Label("Save", systemImage: "square.and.arrow.down")
                     }
                     Button(action: loadCSV) {
@@ -136,6 +136,88 @@ struct macOSView: View {
                     cvsFile!.write(cvsData)
                     cvsFile!.synchronizeFile()
                     cvsFile!.closeFile()
+                }
+            }
+        }
+        )
+    }
+    
+    func export2RLE() {
+        play = false
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = { [UTType.text] }()
+        panel.begin(completionHandler: { (result) in
+            if (result == NSApplication.ModalResponse.OK && panel.url != nil) {
+                var fileMgt: FileManager
+                if #available(OSX 10.14, *) {
+                    fileMgt = FileManager(authorization: NSWorkspace.Authorization())
+                } else {
+                    // Fallback on earlier versions
+                    fileMgt = FileManager.default
+                }
+                fileMgt.createFile(atPath: panel.url!.path, contents: nil, attributes: nil)
+                var rleData = Data(capacity: 200000000)
+                let rleFile = FileHandle(forWritingAtPath: panel.url!.path)
+                if (rleFile != nil) {
+                    var fileStr = String()
+                    var rleStr = String()
+                    if (sizeY > 0 && sizeX > 0)
+                    {
+                        fileStr.append("x = \(sizeX), y = \(sizeY), rule = B3/S2\n")
+                    }
+                    for y in (0...sizeY-1) {
+                        var lastCell = -1
+                        var nbSameCells = 0
+                        for x in (0...sizeX-1) {
+                            if (grid[y][x] == lastCell || lastCell == -1) {
+                                nbSameCells += 1
+                                if (x == sizeX-1) {
+                                    if (grid[y][x] == 0) {
+                                        rleStr.append(nbSameCells > 1 ? "\(nbSameCells)b" : "b")
+                                    }
+                                    else if (grid[y][x] == 1) {
+                                        rleStr.append(nbSameCells > 1 ? "\(nbSameCells)o" : "o")
+                                    }
+                                }
+                            }
+                            else {
+                                if (lastCell == 0) {
+                                    rleStr.append(nbSameCells > 1 ? "\(nbSameCells)b" : "b")
+                                }
+                                else if (lastCell == 1) {
+                                    rleStr.append(nbSameCells > 1 ? "\(nbSameCells)o" : "o")
+                                }
+                                if (x == sizeX-1) {
+                                    if (grid[y][x] == 0) {
+                                        rleStr.append("b")
+                                    }
+                                    else if (grid[y][x] == 1) {
+                                        rleStr.append("o")
+                                    }
+                                }
+                                nbSameCells = 1
+                            }
+                            lastCell = grid[y][x]
+                        }
+                        if (y != sizeY-1)
+                        {
+                            rleStr.append("$")
+                        }
+                        else {
+                            rleStr.append("!")
+                        }
+                    }
+                    var index = rleStr.startIndex
+                    for _ in 1...(rleStr.count/70) {
+                        index = rleStr.index(index, offsetBy: 70)
+                        rleStr.insert("\n", at: index)
+                        index = rleStr.index(index, offsetBy: 1)
+                    }
+                    fileStr.append(rleStr)
+                    rleData.append(fileStr.data(using: String.Encoding.ascii)!)
+                    rleFile!.write(rleData)
+                    rleFile!.synchronizeFile()
+                    rleFile!.closeFile()
                 }
             }
         }
