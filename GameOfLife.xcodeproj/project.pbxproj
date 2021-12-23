@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		941B398527739E9400D20564 /* GameOfLifeTvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941B398427739E9400D20564 /* GameOfLifeTvOSApp.swift */; };
+		941B398727739E9400D20564 /* GameOfLifeTvOSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941B398627739E9400D20564 /* GameOfLifeTvOSView.swift */; };
+		941B398927739E9400D20564 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941B398827739E9400D20564 /* Assets.xcassets */; };
+		941B398C27739E9400D20564 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941B398B27739E9400D20564 /* Preview Assets.xcassets */; };
+		941B399027739EA600D20564 /* GameOfLife.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9455405F276F2B50006F52E4 /* GameOfLife.swift */; };
+		941B399327739FB900D20564 /* GameOfLifeMacOSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941B399227739FB900D20564 /* GameOfLifeMacOSView.swift */; };
+		941B399427739FBC00D20564 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EDB70B276E590400CE597E /* ContentView.swift */; };
 		94554060276F2B50006F52E4 /* GameOfLife.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9455405F276F2B50006F52E4 /* GameOfLife.swift */; };
 		94EDB70A276E590400CE597E /* GameOfLifeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EDB709276E590400CE597E /* GameOfLifeApp.swift */; };
 		94EDB70C276E590400CE597E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EDB70B276E590400CE597E /* ContentView.swift */; };
@@ -15,6 +22,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		941B398227739E9400D20564 /* GameOfLifeTvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfLifeTvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		941B398427739E9400D20564 /* GameOfLifeTvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLifeTvOSApp.swift; sourceTree = "<group>"; };
+		941B398627739E9400D20564 /* GameOfLifeTvOSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLifeTvOSView.swift; sourceTree = "<group>"; };
+		941B398827739E9400D20564 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		941B398B27739E9400D20564 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		941B399227739FB900D20564 /* GameOfLifeMacOSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLifeMacOSView.swift; sourceTree = "<group>"; };
 		9455405F276F2B50006F52E4 /* GameOfLife.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLife.swift; sourceTree = "<group>"; };
 		94EDB706276E590400CE597E /* GameOfLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94EDB709276E590400CE597E /* GameOfLifeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLifeApp.swift; sourceTree = "<group>"; };
@@ -25,6 +38,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		941B397F27739E9400D20564 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94EDB703276E590400CE597E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -35,10 +55,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		941B398327739E9400D20564 /* GameOfLifeTvOS */ = {
+			isa = PBXGroup;
+			children = (
+				941B398427739E9400D20564 /* GameOfLifeTvOSApp.swift */,
+				941B398627739E9400D20564 /* GameOfLifeTvOSView.swift */,
+				941B398827739E9400D20564 /* Assets.xcassets */,
+				941B398A27739E9400D20564 /* Preview Content */,
+			);
+			path = GameOfLifeTvOS;
+			sourceTree = "<group>";
+		};
+		941B398A27739E9400D20564 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				941B398B27739E9400D20564 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		94EDB6FD276E590400CE597E = {
 			isa = PBXGroup;
 			children = (
 				94EDB708276E590400CE597E /* GameOfLife */,
+				941B398327739E9400D20564 /* GameOfLifeTvOS */,
 				94EDB707276E590400CE597E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				94EDB706276E590400CE597E /* GameOfLife.app */,
+				941B398227739E9400D20564 /* GameOfLifeTvOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,6 +97,7 @@
 			children = (
 				94EDB709276E590400CE597E /* GameOfLifeApp.swift */,
 				9455405F276F2B50006F52E4 /* GameOfLife.swift */,
+				941B399227739FB900D20564 /* GameOfLifeMacOSView.swift */,
 				94EDB70B276E590400CE597E /* ContentView.swift */,
 				94EDB70D276E590600CE597E /* Assets.xcassets */,
 				94EDB712276E590600CE597E /* GameOfLife.entitlements */,
@@ -75,6 +117,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		941B398127739E9400D20564 /* GameOfLifeTvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 941B398F27739E9400D20564 /* Build configuration list for PBXNativeTarget "GameOfLifeTvOS" */;
+			buildPhases = (
+				941B397E27739E9400D20564 /* Sources */,
+				941B397F27739E9400D20564 /* Frameworks */,
+				941B398027739E9400D20564 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GameOfLifeTvOS;
+			productName = GameOfLifeTvOS;
+			productReference = 941B398227739E9400D20564 /* GameOfLifeTvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		94EDB705276E590400CE597E /* GameOfLife */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94EDB715276E590600CE597E /* Build configuration list for PBXNativeTarget "GameOfLife" */;
@@ -102,6 +161,9 @@
 				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
+					941B398127739E9400D20564 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
 					94EDB705276E590400CE597E = {
 						CreatedOnToolsVersion = 13.2;
 					};
@@ -121,11 +183,21 @@
 			projectRoot = "";
 			targets = (
 				94EDB705276E590400CE597E /* GameOfLife */,
+				941B398127739E9400D20564 /* GameOfLifeTvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		941B398027739E9400D20564 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				941B398C27739E9400D20564 /* Preview Assets.xcassets in Resources */,
+				941B398927739E9400D20564 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94EDB704276E590400CE597E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,11 +210,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		941B397E27739E9400D20564 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				941B398727739E9400D20564 /* GameOfLifeTvOSView.swift in Sources */,
+				941B399027739EA600D20564 /* GameOfLife.swift in Sources */,
+				941B399427739FBC00D20564 /* ContentView.swift in Sources */,
+				941B398527739E9400D20564 /* GameOfLifeTvOSApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94EDB702276E590400CE597E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				94EDB70C276E590400CE597E /* ContentView.swift in Sources */,
+				941B399327739FB900D20564 /* GameOfLifeMacOSView.swift in Sources */,
 				94554060276F2B50006F52E4 /* GameOfLife.swift in Sources */,
 				94EDB70A276E590400CE597E /* GameOfLifeApp.swift in Sources */,
 			);
@@ -151,6 +235,63 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		941B398D27739E9400D20564 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GameOfLifeTvOS/Preview Content\"";
+				DEVELOPMENT_TEAM = VNLK894MAE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.GameOfLifeTvOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+			};
+			name = Debug;
+		};
+		941B398E27739E9400D20564 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GameOfLifeTvOS/Preview Content\"";
+				DEVELOPMENT_TEAM = VNLK894MAE;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mulot.org.GameOfLifeTvOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		94EDB713276E590600CE597E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -323,6 +464,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		941B398F27739E9400D20564 /* Build configuration list for PBXNativeTarget "GameOfLifeTvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				941B398D27739E9400D20564 /* Debug */,
+				941B398E27739E9400D20564 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		94EDB701276E590400CE597E /* Build configuration list for PBXProject "GameOfLife" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
