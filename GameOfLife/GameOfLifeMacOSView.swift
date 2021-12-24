@@ -211,10 +211,12 @@ struct macOSView: View {
                         }
                     }
                     var index = rleStr.startIndex
+                    if (rleStr.count > 70) {
                     for _ in 1...(rleStr.count/70) {
                         index = rleStr.index(index, offsetBy: 70)
                         rleStr.insert("\n", at: index)
                         index = rleStr.index(index, offsetBy: 1)
+                    }
                     }
                     fileStr.append(rleStr)
                     rleData.append(fileStr.data(using: String.Encoding.ascii)!)
@@ -241,7 +243,7 @@ struct macOSView: View {
                         if (sizeY > 0) {
                             sizeX = yTabs[0].split(separator: ";").count
                         }
-                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
+                        grid = blankGrid(sizeX: sizeX, sizeY: sizeY)
                         countGen = 0
                         print("Tab by \(sizeX)x\(sizeY) loaded")
                         //print(savedString)
@@ -310,7 +312,7 @@ struct macOSView: View {
                                         }
                                     }
                                     if (sizeX > 0 && sizeY > 0) {
-                                        grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
+                                        grid = blankGrid(sizeX: sizeX, sizeY: sizeY)
                                         countGen = 0
                                     }
                                 }

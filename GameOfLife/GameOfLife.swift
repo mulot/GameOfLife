@@ -7,8 +7,12 @@
 
 import Foundation
 
+func blankGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
+    return [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
+}
+
 func randomGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
-    var grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
+    var grid = blankGrid(sizeX: sizeX, sizeY: sizeY)
     
     for y in (0...sizeY-1) {
         for x in (0...sizeX-1) {
