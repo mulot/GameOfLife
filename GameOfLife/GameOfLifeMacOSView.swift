@@ -284,7 +284,7 @@ struct macOSView: View {
                         //print("saved: \(savedString)")
                         var rleStr = String()
                         var endRLE = false
-                        let lines = savedString.split(separator: "\n")
+                        let lines = savedString.components(separatedBy: CharacterSet.newlines)
                         for str in lines {
                             //print("line: \(str)")
                             let line = str.replacingOccurrences(of: " ", with: "")
@@ -296,14 +296,16 @@ struct macOSView: View {
                                             let keyVal = info.split(separator: "=")
                                             if (keyVal.count == 2) {
                                                 sizeX = Int(keyVal[1]) ?? 0
-                                                print("X : \(sizeX)")
+                                                strX = String(sizeX)
+                                                //print("X : \(sizeX)")
                                             }
                                         }
                                         else if (info.lowercased().contains("y")) {
                                             let keyVal = info.split(separator: "=")
                                             if (keyVal.count == 2) {
                                                 sizeY = Int(keyVal[1]) ?? 0
-                                                print("Y : \(sizeY)")
+                                                strY = String(sizeY)
+                                                //print("Y : \(sizeY)")
                                             }
                                         }
                                     }
@@ -327,7 +329,7 @@ struct macOSView: View {
                             let xLines = RLEEnd[0].split(separator: "$")
                             var y = 0
                             for xLine in xLines {
-                                print("X line: \(xLine)")
+                                //print("X line: \(xLine)")
                                 var x = 0
                                 let scanner = Scanner(string: String(xLine))
                                 while !scanner.isAtEnd {
@@ -335,13 +337,17 @@ struct macOSView: View {
                                     let c = scanner.scanCharacter()
                                     if (nbCell != nil) {
                                         for _ in 1...nbCell! {
-                                            grid[y][x] = c == "o" ? 1 : 0
-                                            x += 1
+                                            if (x < sizeX && y < sizeY) {
+                                                grid[y][x] = c == "o" ? 1 : 0
+                                                x += 1
+                                            }
                                         }
                                     }
                                     else {
-                                        grid[y][x] = c == "o" ? 1 : 0
-                                        x += 1
+                                        if (x < sizeX && y < sizeY) {
+                                            grid[y][x] = c == "o" ? 1 : 0
+                                            x += 1
+                                        }
                                     }
                                     //print("X line: \(xLine) Nb: \(nbCell) c:\(c)")
                                 }
