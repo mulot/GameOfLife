@@ -32,6 +32,13 @@ struct macOSView: View {
                     Button( action: { play = !play }) {
                         Label("Play/Pause", systemImage: "playpause.fill")
                     }
+                    Button( action: {
+                        play = false
+                        grid = evolve(grid)
+                        countGen += 1
+                    }) {
+                        Label("Forward", systemImage: "forward.end.fill")
+                    }
                     Button(action: {
                         grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
                         countGen = 0
