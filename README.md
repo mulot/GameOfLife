@@ -1,6 +1,8 @@
 # GameOfLife
 John Conway's Game of Life for macOS written in Swift &amp; SwiftUI.
 
+![Game Of Life MacOS Fullscreen](/Screenshots/gameoflife-macos-fullscreen.png?raw=true "Game of Life")
+
 - Start with a random grid
 - Choose the grid dimenssion
 - Adapt the grid dimension to the window size
