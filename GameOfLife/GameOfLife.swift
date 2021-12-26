@@ -22,7 +22,7 @@ func randomGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
     return grid
 }
 
-func evolve(_ grid: [[Int]]) -> [[Int]] {
+func evolve(_ grid: [[Int]], birth: [Int] = [3], survival: [Int] = [2,3]) -> [[Int]] {
     let sizeY = grid.count
     let sizeX = grid[0].count
     var newGrid = grid
@@ -71,13 +71,19 @@ func evolve(_ grid: [[Int]]) -> [[Int]] {
                 }
             }
             if (grid[y][x] == 1) {
-                if ((neighbors < 2) || (neighbors > 3)) {
-                    newGrid[y][x] = 0
+                var result = 0
+                for s in survival {
+                    if (neighbors == s) {
+                        result = 1
+                    }
                 }
+                newGrid[y][x] = result
             }
             else if (grid[y][x] == 0) {
-                if (neighbors == 3) {
+                for b in birth {
+                if (neighbors == b) {
                     newGrid[y][x] = 1
+                }
                 }
             }
             //print("X: \(x+1) Y: \(y+1) has value: \(grid[y][x]) and has \(neighbors) neighbors > new value \(newGrid[y][x])")
