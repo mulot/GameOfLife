@@ -7,6 +7,9 @@
 
 import Foundation
 
+var defaultBirthRule = [3]
+var defaultSurvivalRule = [2,3]
+
 func blankGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
     return [[Int]].init(repeating: [Int].init(repeating: 0, count: sizeX), count: sizeY)
 }
@@ -22,7 +25,7 @@ func randomGrid(sizeX: Int, sizeY: Int) -> [[Int]] {
     return grid
 }
 
-func evolve(_ grid: [[Int]], birth: [Int] = [3], survival: [Int] = [2,3]) -> [[Int]] {
+func evolve(_ grid: [[Int]], birth: [Int] = defaultBirthRule, survival: [Int] = defaultSurvivalRule) -> [[Int]] {
     let sizeY = grid.count
     let sizeX = grid[0].count
     var newGrid = grid

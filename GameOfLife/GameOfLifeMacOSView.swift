@@ -23,6 +23,8 @@ struct macOSView: View {
     @State private var countGen = 0
     @State private var play: Bool = true
     @State private var gridSize: CGSize = .zero
+    @State private var birthRule: [Int] = defaultBirthRule
+    @State private var survivalRule: [Int] = defaultSurvivalRule
     
     var body: some View {
         let timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
@@ -173,7 +175,7 @@ struct macOSView: View {
                     var rleStr = String()
                     if (sizeY > 0 && sizeX > 0)
                     {
-                        fileStr.append("x = \(sizeX), y = \(sizeY), rule = B3/S2\n")
+                        fileStr.append("x = \(sizeX), y = \(sizeY), rule = B3/S23\n")
                     }
                     for y in (0...sizeY-1) {
                         var lastCell = -1
@@ -306,7 +308,7 @@ struct macOSView: View {
                                             if (keyVal.count == 2) {
                                                 sizeX = Int(keyVal[1]) ?? 0
                                                 strX = String(sizeX)
-                                                //print("X : \(sizeX)")
+                                                //print("X: \(sizeX)")
                                             }
                                         }
                                         else if (info.lowercased().contains("y")) {
@@ -314,7 +316,24 @@ struct macOSView: View {
                                             if (keyVal.count == 2) {
                                                 sizeY = Int(keyVal[1]) ?? 0
                                                 strY = String(sizeY)
-                                                //print("Y : \(sizeY)")
+                                                //print("Y: \(sizeY)")
+                                            }
+                                        }
+                                        else if (info.lowercased().contains("rule")) {
+                                            let keyVal = info.split(separator: "=")
+                                            if (keyVal.count == 2) {
+                                                let rules = keyVal[1].split(separator: "/")
+                                                for rule in rules {
+                                                    //print("rule: \(rule)")
+                                                    if (rule.starts(with: "B")) {
+                                                        birthRule = Array(rule.dropFirst()).map({elt in Int(String(elt)) ?? 0})
+                                                        //print("B Rule: \(birthRule)")
+                                                    }
+                                                    else if (rule.starts(with: "S")) {
+                                                        survivalRule = Array(rule.dropFirst()).map({elt in Int(String(elt)) ?? 0})
+                                                        //print("S Rule: \(survivalRule)")
+                                                    }
+                                                }
                                             }
                                         }
                                     }
