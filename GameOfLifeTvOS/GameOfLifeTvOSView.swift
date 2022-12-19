@@ -15,6 +15,7 @@ struct TvOSView: View {
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     @State private var delay: TimeInterval = defaultDelay
     var refresh: Bool = false
+    var reset: Bool = false
     private let timer = Timer.publish(every: defaultDelay, on: .main, in: .common).autoconnect()
     let colors: [Color] = [.black, .gray, .red, .orange, .yellow,
                            .green, .blue, .purple, .pink]
@@ -53,6 +54,14 @@ struct TvOSView: View {
                         //fgColor = colors.randomElement()!
                         fgColor = colors[index]
                         //print("index: \(index) color: \(fgColor)")
+                    }
+                    .onChange(of: reset) { _ in
+                        if (gridSize != .zero) {
+                            //print("Size is \(gridSize.width) x \(gridSize.height)")
+                            sizeX = Int(gridSize.width / defaultBoxSpacing)
+                            sizeY = Int(gridSize.height / defaultBoxSpacing)
+                            grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
+                        }
                     }
             }
         }
