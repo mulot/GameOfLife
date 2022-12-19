@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let defaultDelay: TimeInterval = 1
+let defaultDelay: TimeInterval = 0.5
 
 struct TvOSView: View {
     @State var sizeX = defaultSizeX
@@ -19,7 +19,7 @@ struct TvOSView: View {
                            .green, .blue, .purple, .pink]
     @State var fgColor: Color = .black
     @State private var gridSize: CGSize = .zero
-    
+        
     var body: some View {
             ZStack {
                 GridView(sizeX: sizeX, sizeY: sizeY)
@@ -40,9 +40,11 @@ struct TvOSView: View {
                             grid = randomGrid(sizeX: sizeX, sizeY: sizeY)
                         }
                     }
-                    .onLongPressGesture(minimumDuration: 0.01) {
-                        fgColor = colors.randomElement()!
-                    }
+//                    .onLongPressGesture(minimumDuration: 0.01) {
+//                        print("On Long Press Gesture")
+//                        fgColor = colors.randomElement()!
+//                    }
+                    
             }
         }
 }

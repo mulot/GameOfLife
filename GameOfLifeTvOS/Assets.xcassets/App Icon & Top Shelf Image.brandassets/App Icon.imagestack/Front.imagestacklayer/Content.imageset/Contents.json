@@ -1,10 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-400x240.png",
       "idiom" : "tv",
       "scale" : "1x"
     },
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-800x480.png",
       "idiom" : "tv",
       "scale" : "2x"
     }

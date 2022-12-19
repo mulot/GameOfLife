@@ -1,18 +1,22 @@
 {
   "images" : [
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-1921.png",
       "idiom" : "tv",
       "scale" : "1x"
     },
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-3841.png",
       "idiom" : "tv",
       "scale" : "2x"
     },
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-1920.png",
       "idiom" : "tv-marketing",
       "scale" : "1x"
     },
     {
+      "filename" : "GameOfLife App Icon-TvOS-v1-3840.png",
       "idiom" : "tv-marketing",
       "scale" : "2x"
     }
