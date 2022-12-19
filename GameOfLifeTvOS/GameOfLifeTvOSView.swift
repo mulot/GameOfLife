@@ -49,9 +49,11 @@ struct TvOSView: View {
 //                    }
                     .onChange(of: refresh) { _ in
                         //print("reshesh: \(refresh)")
-                        fgColor = colors.randomElement()!
+                        let index = ((colors.firstIndex(of: fgColor) ?? 0) + 1) >= colors.count ? 0 : ((colors.firstIndex(of: fgColor) ?? 0) + 1)
+                        //fgColor = colors.randomElement()!
+                        fgColor = colors[index]
+                        //print("index: \(index) color: \(fgColor)")
                     }
-                    
             }
         }
 }
