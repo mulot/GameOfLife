@@ -14,6 +14,7 @@ struct TvOSView: View {
     @State var sizeY = defaultSizeY
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
     @State private var delay: TimeInterval = defaultDelay
+    var refresh: Bool = false
     private let timer = Timer.publish(every: defaultDelay, on: .main, in: .common).autoconnect()
     let colors: [Color] = [.black, .gray, .red, .orange, .yellow,
                            .green, .blue, .purple, .pink]
@@ -30,8 +31,10 @@ struct TvOSView: View {
                             if (!newgrid.elementsEqual(grid)) {
                                 grid = newgrid
                             }
+                        //print("reshesh: \(refresh)")
                     }
                     .onAppear() {
+                        //print("Appear")
                         fgColor = colors.randomElement()!
                         if (gridSize != .zero) {
                             //print("Size is \(gridSize.width) x \(gridSize.height)")
@@ -44,6 +47,10 @@ struct TvOSView: View {
 //                        print("On Long Press Gesture")
 //                        fgColor = colors.randomElement()!
 //                    }
+                    .onChange(of: refresh) { _ in
+                        //print("reshesh: \(refresh)")
+                        fgColor = colors.randomElement()!
+                    }
                     
             }
         }

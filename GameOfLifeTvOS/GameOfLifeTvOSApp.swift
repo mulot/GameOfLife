@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct GameOfLifeTvOSApp: App {
+    @State var refresh: Bool = false
+    
     var longPress: some Gesture {
         LongPressGesture(minimumDuration: 0.5)
             .onEnded { _ in
@@ -18,11 +20,11 @@ struct GameOfLifeTvOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TvOSView()
+            TvOSView(refresh: refresh)
                 .focusable(true)
                 .highPriorityGesture(longPress)
                 .onLongPressGesture(minimumDuration: 0.01, pressing: { _ in }) {
-                    print("press")
+                    refresh.toggle()
                 }
         }
     }
