@@ -13,6 +13,7 @@ struct TvOSView: View {
     @State var sizeX = defaultSizeX
     @State var sizeY = defaultSizeY
     @State var grid = randomGrid(sizeX: defaultSizeX, sizeY: defaultSizeY)
+    @State var viewGrid: Bool = false
     @State private var delay: TimeInterval = defaultDelay
     var refresh: Bool = false
     var reset: Bool = false
@@ -24,7 +25,9 @@ struct TvOSView: View {
         
     var body: some View {
             ZStack {
-                GridView(sizeX: sizeX, sizeY: sizeY)
+                if (viewGrid) {
+                    GridView(sizeX: sizeX, sizeY: sizeY)
+                }
                 GameOfLifeView(grid: $grid, sizeX: sizeX, sizeY: sizeY, color: fgColor)
                     .size(size: $gridSize)
                     .onReceive(timer) { _ in

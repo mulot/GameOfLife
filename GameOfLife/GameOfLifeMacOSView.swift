@@ -260,7 +260,7 @@ struct macOSView: View {
                         for line in yTabs {
                             //print("\(y)#: \(line)")
                             if (y > sizeY-1) {
-                                print("Y:\(y) y overflows")
+                                //print("Y:\(y) y overflows")
                                 break
                             }
                             var x = 0
@@ -268,7 +268,7 @@ struct macOSView: View {
                             for cell in xTabs {
                                 //print("Y:\(y) X:\(x)#: \(cell)")
                                 if (x > sizeX-1) {
-                                    print("X:\(x) Y:\(y) x overflows")
+                                    //print("X:\(x) Y:\(y) x overflows")
                                     break
                                 }
                                 grid[y][x] = Int(cell) ?? 0

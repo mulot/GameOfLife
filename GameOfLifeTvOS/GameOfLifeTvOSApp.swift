@@ -15,14 +15,14 @@ struct GameOfLifeTvOSApp: App {
     var longPress: some Gesture {
         LongPressGesture(minimumDuration: 1.0)
             .onEnded { _ in
-                print("longpress")
+                //print("longpress")
                 reset.toggle()
             }
     }
     
     var body: some Scene {
         WindowGroup {
-            TvOSView(refresh: refresh, reset: reset)
+            TvOSView(viewGrid: false, refresh: refresh, reset: reset)
                 .focusable(true)
                 .highPriorityGesture(longPress)
                 .onLongPressGesture(minimumDuration: 0.01, pressing: { _ in }) {
